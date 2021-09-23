@@ -28,7 +28,7 @@ static unsigned char ungetArray[UNGETMAX];
  *      to an <code>int</code>.
  */
 
-int i = 0;
+static int i = 0;
 
 syscall kgetc(void)
 {
@@ -176,6 +176,8 @@ syscall kputc(uchar c)
  * @return
  *      The number of characters written.
  */
+
+
 syscall kprintf(const char *format, ...)
 {
     int retval;
