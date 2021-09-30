@@ -1,4 +1,13 @@
 /**
+ * COSC 3250 - Project 4
+ * This program allows functions to work on multiple cores
+ * @author Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu jacqueline.gutierrez@marquette.edu
+ */
+
+
+/**
  * @file spinlock.c
  * @provides lock_create, lock_free, lock_acquire, lock_release.
  *
@@ -66,8 +75,21 @@ syscall lock_acquire(spinlock_t lock)
     // TODO: First, check if lock is a valid lock.
     //       Next, call _lock_acquire assembly subroutine
     //       and properly set "core" field of lockent struct        
+	
+	unsigned int *lockptr;
+	lockptr = &(locktab[lock].lock);
 
-    return OK;
+	if (isbadlock(lock)){
+		return SYSERR;
+	}
+
+	else{
+		_lock_acquire(lockptr);
+		locktab[lock].core = getcpuid();
+		return OK;					
+	}
+
+ //   return OK;
 }
 
 /**
@@ -81,7 +103,19 @@ syscall lock_release(spinlock_t lock)
     //       Call _lock_release assembly subroutine and
     //       reset "core" field of lockent struct
 
-    return OK;
+	unsigned int *lockptr;
+        lockptr = &(locktab[lock].lock);
+
+	if (isbadlock(lock)){
+		return SYSERR;
+	}
+	else{
+		_lock_release(lockptr);
+		locktab[lock].core = -1;
+		return OK;
+	}		
+
+    //return OK;
 }
 
 /**

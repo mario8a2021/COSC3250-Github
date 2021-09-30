@@ -1,4 +1,12 @@
 /**
+ * COSC 3250 - Project 4
+ * This program tests our spinlock functions in spinlock.c
+ * @author Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu jacqueline.gutierrez@marquette.edu
+ */
+
+/**
  * @file testcases.c
  * @provides testcases
  *
@@ -35,6 +43,7 @@ void testcases(void)
 {
     int c, i, status;
     spinlock_t testlock;
+    //spinlock_t 2testlock;
 
     kprintf("===TEST BEGIN===\r\n");
 
@@ -89,6 +98,16 @@ void testcases(void)
         // Expected output is that lock field is locked and core field is 1.
         
         // TODO: Write this testcase.
+
+	//lock_acquire(testlock);
+	//lock_acquire(2testlock);
+
+	//print_lockent(testlock);
+	//print_lockent(2testlock);
+
+	//lock_free(testlock);
+	//lock_free(2testlock);
+	
         break;
 
     case '5':
