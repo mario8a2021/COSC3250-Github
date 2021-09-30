@@ -34,10 +34,11 @@ try:
 	ldrex 	r1,[r0]
 	cmp 	r1,r2
 
+	mov     r1,#SPINLOCK_LOCKED
 	beq 	_lock_acquire
 	strex 	r2,r1,[r0]
 
-	cmp 	r2,#0x0
+	cmp 	r2,#0
 	bne 	_lock_acquire
 	
 	// TODO: Implement a spinlock acquire method by:
