@@ -55,6 +55,16 @@ syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
 
 	// TODO: Setup PCB entry for new process.
 
+	//-------------------------	
+	ppcb->core_affinity = -1;
+	ppcb->stklen = ssize;
+	ppcb-> stkbase = saddr;
+
+	strncpy(ppcb->name,name,PNMLEN);
+	//-----------------------
+
+	//strncpy (look up function)
+
 
 	/* Initialize stack with accounting block. */
 	*saddr = STACKMAGIC;
@@ -75,14 +85,61 @@ syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
 	}
 
 	// TODO: Initialize process context.
-	//
+	//---------------------------------
+	ppcb->regs[PREG_R0] = 0;
+	ppcb->regs[PREG_R1] = 0;   
+        ppcb->regs[PREG_R2] = 0;
+        ppcb->regs[PREG_R3] = 0;
+        ppcb->regs[PREG_R4] = 0;
+        ppcb->regs[PREG_R5] = 0;
+        ppcb->regs[PREG_R6] = 0;
+        ppcb->regs[PREG_R7] = 0;   
+	ppcb->regs[PREG_R8] = 0;
+        ppcb->regs[PREG_R9] = 0;
+        ppcb->regs[PREG_R10] = 0;
+        ppcb->regs[PREG_R11] = 0;
+        ppcb->regs[PREG_IP] = 0;
+	ppcb->regs[PREG_SP] = (int) saddr;	
+	
+	//---------------------------------
+	
 	// TODO:  Place arguments into activation record.
 	//        See K&R 7.3 for example using va_start, va_arg and
 	//        va_end macros for variable argument functions.
 
 	//store first 4 args in r0-r3
-	//store later args in stack
+	//store the rest of the args in stack
 
+	//---------------------------------	
+	
+	va_start(ap,nargs);
+	
+	int a;
+	
+	if(nargs <=4){ 
+		a = nargs;
+	}
+	else { 
+		a = 4;
+	}
+
+	int b;
+	for(b = 0; b < a;b++){
+		ppcb->regs[b] = va_arg(ap,int);
+	}	
+
+	for(a; a < nargs; a++ ){
+		*(saddr + a - 4) = va_arg(ap,int);
+	}
+	
+	ppcb->regs[PREG_LR] = (int) userret;
+	ppcb->regs[PREG_PC] = (int) funcaddr;
+	va_end(ap);
+	
+
+
+	//---------------------------------
+	
 	return pid;
 }
 
