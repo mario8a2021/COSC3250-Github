@@ -1,3 +1,9 @@
+/** COSC 3250 - Project 5
+ * This program creates testcases for create.c
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya 
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
 /**
  * @file testcases.c
  * @provides testcases
@@ -8,8 +14,8 @@
  *
  * and
  *
- */
-/* Embedded XINU, Copyright (C) 2007.  All rights reserved. */
+ *
+ Embedded XINU, Copyright (C) 2007.  All rights reserved. */
 
 #include <xinu.h>
 
@@ -88,7 +94,8 @@ void testcases(void)
     kprintf("0) Test creation of one process\r\n");
     kprintf("1) Test passing of many args\r\n");
     kprintf("2) Create three processes and run them\r\n");
-	kprintf("3) Create three processes and run them on other cores\r\n");
+    kprintf("3) Create three processes and run them on other cores\r\n");
+    kprintf("4) Creates six processes and it runs them\r\n");
 
     kprintf("===TEST BEGIN===\r\n");
 
@@ -110,7 +117,26 @@ void testcases(void)
                      0x55555555, 0x66666666, 0x77777777, 0x88888888);
         printpcb(pid);
         // TODO: print out stack with extra args
+ 	//--------------------       
+			
+        pcb *ppcb;
+		
+	ppcb = &proctab[pid];
+	int *stack;
+	
+        for (int i = 0; i <= 3; i++){
+		stack = ppcb->regs[PREG_SP];
+		kprintf("Extra stack argument %d: 0x%08X\r\n", (i+5) , *(stack + i));
+	}			
+        
+
+	//---------------------
+	// create test case to max out the stack
+	// ------------------------------------
+	
+	
         // TODO: ready(pid, RESCHED_YES, 0);
+        ready(pid, RESCHED_YES,0);
         break;
 
     case '2':
@@ -126,6 +152,17 @@ void testcases(void)
 		ready(create((void *)testmain, INITSTK, "MAIN2", 2, 0, NULL), RESCHED_NO, 2);
 		ready(create((void *)testmain, INITSTK, "MAIN3", 2, 0, NULL), RESCHED_NO, 3);
 		break;
+
+	case '4':
+		// Creates 6 copies of a process
+		ready(create((void *)testmain, INITSTK, "MAIN1", 2, 0, NULL), RESCHED_NO , 0);
+        	ready(create((void *)testmain, INITSTK, "MAIN2", 2, 0, NULL), RESCHED_NO , 0);
+       		ready(create((void *)testmain, INITSTK, "MAIN3", 2, 0, NULL), RESCHED_NO, 0);
+		ready(create((void *)testmain, INITSTK, "MAIN4", 2, 0, NULL), RESCHED_NO , 0);
+        	ready(create((void *)testmain, INITSTK, "MAIN5", 2, 0, NULL), RESCHED_NO , 0);
+        	ready(create((void *)testmain, INITSTK, "MAIN6", 2, 0, NULL), RESCHED_YES, 0);		
+		break;
+
 	default:
 		break;
     }

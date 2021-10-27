@@ -24,7 +24,7 @@ process main(void)
 		kprintf("This is process %d\r\n", currpid[cpuid]);
 
 		/* Uncomment the resched() line below to see cooperative scheduling. */
-		// resched();
+		 resched();
 	}
 
 	return 0;

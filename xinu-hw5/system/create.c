@@ -1,4 +1,12 @@
 /**
+ * COSC 3250 - Project 5
+ * This program would be able to create processes
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya 
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
+/**
  * @file create.c
  * @provides create, newpid, userret
  *
@@ -115,31 +123,30 @@ syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
 	va_start(ap,nargs);
 	
 	int a;
-	
-	if(nargs <=4){ 
-		a = nargs;
+	int b;
+	if(nargs <= 4){ 
+		b = nargs;
 	}
 	else { 
-		a = 4;
+		b = 4;
 	}
 
-	int b;
-	for(b = 0; b < a;b++){
-		ppcb->regs[b] = va_arg(ap,int);
+	//int b;
+	for(a = 0; a < b;a++){
+		ppcb->regs[a] = va_arg(ap,int);
 	}	
 
-	for(a; a < nargs; a++ ){
-		*(saddr + a - 4) = va_arg(ap,int);
+	if (nargs > 4){
+		for(b = 4; b < nargs; b++ ){
+                	*(saddr + b - 4) = va_arg(ap,int);
+        	}
 	}
 	
 	ppcb->regs[PREG_LR] = (int) userret;
 	ppcb->regs[PREG_PC] = (int) funcaddr;
 	va_end(ap);
 	
-
-
-	//---------------------------------
-	
+	//--------------------------------
 	return pid;
 }
 

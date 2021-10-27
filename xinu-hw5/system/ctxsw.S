@@ -1,4 +1,13 @@
 /**
+ * COSC 3250 - Project 5
+ * This program would save and restore our registers
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya 
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
+
+/**
  * @file     ctxsw.s
  * @provides ctxsw
  *
@@ -29,7 +38,7 @@ ctxsw:
 	.func ctxsw
 
 	// TODO: Save callee-save ("non-volatile") registers.
-
+	
 	str r0, [r0, #PREG_R0]
     	str r1, [r0, #PREG_R1 * 4]
     	str r2, [r0, #PREG_R2 * 4]
@@ -45,10 +54,11 @@ ctxsw:
 
 	str r13, [r0, #PREG_SP * 4]
 	str r14, [r0, #PREG_PC * 4] 
+	str r14, [r0, #PREG_PC * 4]
 
 	// TODO: Restore callee-save ("non-volatile") registers.
 
-	mov r12, r1 
+	mov r12, r1
 
 	ldr r0, [r12, #PREG_R0]
         ldr r1, [r12, #PREG_R1 * 4]
