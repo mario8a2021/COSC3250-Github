@@ -33,10 +33,11 @@ void *getstk(ulong);
  * @param nargs    number of arguments that follow
  * @return the new process id
  */
-syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
+
+syscall create(void *funcaddr, ulong ssize, ulong priority ,char *name, ulong nargs, ...)
 {
 	ulong *saddr;               /* stack address                */
-	ulong pid;                  /* stores new process id        */
+	ulong pid;     		    /* stores new process id        */	
 	pcb *ppcb;                  /* pointer to proc control blk  */
 	ulong i;
 	va_list ap;                 /* points to list of var args   */
@@ -67,7 +68,7 @@ syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
 	ppcb->core_affinity = -1;
 	ppcb->stklen = ssize;
 	ppcb-> stkbase = saddr;
-
+	ppcb-> priority = priority;
 	strncpy(ppcb->name,name,PNMLEN);
 	//-----------------------
 

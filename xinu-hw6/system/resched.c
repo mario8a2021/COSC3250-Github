@@ -35,6 +35,23 @@ syscall resched(void)
     //       Reference include/clock.h to find more information
     //       about the quantums and how aging should behave.
 
+    promote_medium[cpuid]--;
+
+    if(promote_medium[cpuid] == 0){
+
+	enqueue(dequeue(readylist[cpuid][PRIORITY_MED]), readylist[cpuid][PRIORITY_HIGH]); 
+   	promote_low[cpuid]--;
+
+	if(promote_low[cpuid] == 0){
+
+		enqueue(dequeue(readylist[cpuid][PRIORITY_LOW]), readylist[cpuid][PRIORITY_MED]);
+		promote_low[cpuid] = QUANTUM;
+
+	}
+
+	promote_medium[cpuid] = QUANTUM; 
+
+    }
 
 #endif
 

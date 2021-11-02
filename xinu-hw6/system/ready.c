@@ -35,7 +35,9 @@ syscall ready(pid_typ pid, bool resch, uint core)
     // TODO: enqueue the process onto the proper readylist.
     //
     //       You will do this based off the processes core_affinity and priority.
-    //       
+
+    enqueue(pid,readylist[ppcb->core_affinity][ppcb->priority]);    
+       
     // NOTE:
     //       readylist is a 2-Dimensional array..
     //       the first index indicates what core, 
