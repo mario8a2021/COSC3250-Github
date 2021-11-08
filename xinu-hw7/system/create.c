@@ -18,8 +18,8 @@
 #include <xinu.h>
 
 /* Assembly routine for atomic operations */
-extern int _atomic_increment_post(int *);
-extern int _atomic_increment_limit(int *, int);
+extern int _atomic_increment(int *);
+extern int _atomic_increment_mod(int *, int);
 
 static pid_typ newpid(void);
 void userret(void);
@@ -56,7 +56,7 @@ syscall create(void *funcaddr, ulong ssize, ulong priority ,char *name, ulong na
 		return SYSERR;
 	}
 
-	_atomic_increment_post(&numproc);
+	_atomic_increment(&numproc);
 
 	ppcb = &proctab[pid];
 	/* setup PCB entry for new proc */
@@ -163,7 +163,7 @@ static pid_typ newpid(void)
 	for (pid = 0; pid < NPROC; pid++)
 	{                           /* check all NPROC slots    */
 		//        nextpid = (nextpid + 1) % NPROC;
-		_atomic_increment_limit(&nextpid, NPROC);
+		_atomic_increment_mod(&nextpid, NPROC);
 		if (PRFREE == proctab[nextpid].state)
 		{
 			return nextpid;
