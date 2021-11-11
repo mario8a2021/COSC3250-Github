@@ -48,7 +48,8 @@ syscall create(void *funcaddr, ulong ssize, ulong priority ,char *name, ulong na
 		ssize = MINSTK;
 	ssize = (ulong)(ssize + 3) & 0xFFFFFFFC;
 	/* round up to even boundary    */
-	saddr = (ulong *)getstk(ssize);     /* allocate new stack and pid   */
+	//saddr = (ulong *)getstk(ssize);     /* allocate new stack and pid   */------
+	saddr = (ulong *)getmem(ssize);
 	pid = newpid();
 	/* a little error checking      */
 	if ((((ulong *)SYSERR) == saddr) || (SYSERR == pid))
@@ -73,7 +74,11 @@ syscall create(void *funcaddr, ulong ssize, ulong priority ,char *name, ulong na
 	//-----------------------
 
 	//strncpy (look up function)
+        
+        /* Initialize stack with accounting block. */
+        saddr = (ulong *)(((ulong)saddr) + ssize-4);
 
+  
 
 	/* Initialize stack with accounting block. */
 	*saddr = STACKMAGIC;

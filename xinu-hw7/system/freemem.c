@@ -1,4 +1,13 @@
 /**
+ * COSC 3250 - Project 7
+ * This program will free allocated memory that is stored with the memblock structure.
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
+
+/**
  * @file freemem.c
  *
  */
@@ -51,7 +60,52 @@ syscall freemem(void *memptr, ulong nbytes)
      *      - Coalesce with previous block if adjacent
      *      - Coalesce with next block if adjacent
      */
+    
+    int core = 0;
 
-	restore(im);
+    for(int i = 0; i < NCORES; i++){
+	if(  (ulong)memptr <= (freelist[i].base + freelist[i].bound) && (ulong)memptr >= freelist[i].base ){
+		core = i;
+	}
+    }
+
+    lock_acquire(freelist[core].memlock);
+    prev = (memblk *)&freelist[core]; 
+    next = freelist[core].head;
+
+    while(next != NULL && next < block){
+
+	prev = next;
+        next = next->next;
+    	
+    }
+
+    if ( (ulong) prev == (ulong)&freelist[core]  ){
+
+	top = NULL;	
+
+    }
+
+    else {
+
+	top = (ulong)prev + prev->length;
+
+    }
+
+    freelist[core].length = freelist[core].length + nbytes;
+    
+
+    if (top == (ulong) block){
+
+	prev->length = prev->length + nbytes;
+        block = prev;
+
+    }
+
+    lock_release(freelist[core].memlock);
+
+
+  
+    restore(im);
     return OK;
 }

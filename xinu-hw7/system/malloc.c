@@ -1,4 +1,13 @@
 /**
+ * COSC 3250 - Project 7
+ * This program allocates memory for new processes.
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
+
+/**
  * @file malloc.c
  * This file is deprecated in favor of mem/malloc.c and the user heap
  * allocator.  However, it remains here for backup purposes.
@@ -36,6 +45,15 @@ void *malloc(ulong size)
       *      3) Set accounting info in pmem
       */  
 
+    size = size+sizeof(struct memblock);//
+    pmem= getmem(size);
+    if (pmem == SYSERR){
+         return NULL;		
+    }
+    else{
+	pmem->next = pmem;
+	pmem->length = size;
+    }
 
     return (void *)(pmem + 1);  /* +1 to skip accounting info */
 }

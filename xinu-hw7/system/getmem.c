@@ -1,4 +1,12 @@
 /**
+ * COSC 3250 - Project 7
+ * This program will allocate memory for processes.
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
+/**
  * @file getmem.c
  *
  */
@@ -47,38 +55,38 @@ void *getmem(ulong nbytes)
      */
 
     uint cpuid = getcpuid();
-    currentCpuId = freelist[cpuid].head;
-    previousCpuId = &freelist;
+    curr = freelist[cpuid].head; //curr
+    prev = &freelist;
 
-    while(currentCpuId != NULL){
+    while(curr != NULL){
 
-	if(currentCpuId->length < nbytes){
-		previousCpuId = currentCpuId;
-		currentCpuId = currentCpuId->next;
+	if(curr->length < nbytes){
+		prev = curr;
+		curr = curr->next;
 
 	}
 
-	else if(currentCpuId->length == nbytes){
-		previousCpuId->next = currentCpuId->next;
+	else if(curr->length == nbytes){
+		prev->next = curr->next;
 		freelist[cpuid].length = freelist[cpuid].length - nbytes;		
-		currentCpuId->next = currentCpuId;
+		curr->next = curr;
 		lock_release(freelist[cpuid].memlock);	
 		restore(im);
 
-		return (void *) currentCpuId;
+		return (void *) curr;
 	}
-	else if(currentCpuId->length > nbytes ){
-		accessBytes = (struct memblock *)((uint)curr + nbytes); 
-		accessBytes->next = currentCpuId->next;
-		accessBytes->length = freelist[cpuid].length - nbytes;
+	else if(curr->length > nbytes ){
+		leftover = (struct memblock *)((uint)curr + nbytes); 
+		leftover->next = curr->next;
+		leftover->length = freelist[cpuid].length - nbytes;
 
-		previousCpuId->next = accessBytes;
+		prev->next = leftover;
 		freelist[cpuid].length = freelist[cpuid].length - nbytes;
-		currentCpuId->next = currentCpuId;
+		curr->next = curr;
 		lock_release(freelist[cpuid].memlock);
 		restore(im);
 	
-		return (void *) currentCpuId; 
+		return (void *) curr; 
 
 	}
 

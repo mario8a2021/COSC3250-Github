@@ -1,4 +1,13 @@
 /**
+ * COSC 3250 - Project 7
+ * This program will free memory and make it avalible for other processes.
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
+
+/**
  * @file free.c
  */
 /* Embedded Xinu, Copyright (C) 2009, 2013.  All rights reserved. */
@@ -23,6 +32,19 @@ syscall free(void *ptr)
      *      2) find accounting information of the memblock
      *      3) call freemem on the block with its length
      */
+
+   
+    block =(struct memblock*) ptr;
+
+    block--;
+
+    if (block->next != block){
+        return SYSERR;
+    } 
+    freemem(block, block->length);
+
+
+
 
     return OK;
 }
