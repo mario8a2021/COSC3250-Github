@@ -74,7 +74,16 @@ void testcases(void)
 
         // TODO: Create a testcase that demonstrates aging 
 
-	
+       
+
+	int a = getmem(1000);
+	freemem(a, 1000);
+	//kprintf("it worked");	
+
+
+
+
+
         ready(create
               ((void *)printpid, INITSTK, PRIORITY_HIGH, "PRINTER-A", 1,
                10), RESCHED_NO, 0);

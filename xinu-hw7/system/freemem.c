@@ -61,51 +61,60 @@ syscall freemem(void *memptr, ulong nbytes)
      *      - Coalesce with next block if adjacent
      */
     
-    int core = 0;
+    int core = -1;
 
     for(int i = 0; i < NCORES; i++){
 	if(  (ulong)memptr <= (freelist[i].base + freelist[i].bound) && (ulong)memptr >= freelist[i].base ){
 		core = i;
+		//kprintf("%d",core);
 	}
     }
 
     lock_acquire(freelist[core].memlock);
-    prev = (memblk *)&freelist[core]; 
+    prev = NULL; 
     next = freelist[core].head;
 
     while(next != NULL && next < block){
-
 	prev = next;
-        next = next->next;
-    	
+        next = next->next;    	
     }
 
     if ( (ulong) prev == (ulong)&freelist[core]  ){
-
 	top = NULL;	
-
     }
 
     else {
-
 	top = (ulong)prev + prev->length;
+    }
+
+    freelist[core].length = freelist[core].length + nbytes;    
+
+    if (top == (ulong) block){
+	prev->length = prev->length + nbytes;
+        block = prev;
+    }
+
+    else{
+
+    block->length = nbytes;
+    block->next = next;
+    prev->next = block;
 
     }
 
-    freelist[core].length = freelist[core].length + nbytes;
+    if ( (ulong)block + block->length == (ulong)next ) {
+
+	block->length = block->length + next->length;
+	block->next = next->next;
     
-
-    if (top == (ulong) block){
-
-	prev->length = prev->length + nbytes;
-        block = prev;
-
     }
 
     lock_release(freelist[core].memlock);
-
-
   
     restore(im);
     return OK;
 }
+
+
+
+
