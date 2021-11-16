@@ -46,7 +46,7 @@ void testcases(void)
     kprintf("0) Test priority scheduling\r\n");
     kprintf("\'A\') Aging / Starvation testcase\r\n");
     kprintf("\'P\') Preemption testcase\r\n");
-
+    kprintf("(T) Getting memory and releasing memory with getmem and freemem testcase\r\n");
     // TODO: Test your operating system!
 
     c = kgetc();
@@ -73,16 +73,6 @@ void testcases(void)
         kprintf("AGING is enabled.\r\n");
 
         // TODO: Create a testcase that demonstrates aging 
-
-       
-
-	int a = getmem(1000);
-	freemem(a, 1000);
-	//kprintf("it worked");	
-
-
-
-
 
         ready(create
               ((void *)printpid, INITSTK, PRIORITY_HIGH, "PRINTER-A", 1,
@@ -144,6 +134,31 @@ void testcases(void)
         kprintf("\r\nPreemption is not currently enabled...\r\n");
 #endif
         break;
+
+
+    case 't':
+    case 'T':
+
+	kprintf("Accessing 1000 bytes and releasing 1000 bytes:\r\n");
+	kprintf("Amount of avalible bytes: %d\r\n",freelist[0].length);
+	int a = getmem(1000);
+	kprintf("Amount of avalible bytes: %d\r\n",freelist[0].length); 
+        freemem(a, 1000);
+	kprintf("Amount of avalible bytes: %d\r\n",freelist[0].length);	
+
+	kprintf("\r\n");
+
+	kprintf("Accessing 10,000 bytes and releasing 10,000 bytes:\r\n");
+        kprintf("Amount of avalible bytes: %d\r\n",freelist[0].length);
+        int b = getmem(10000);
+        kprintf("Amount of avalible bytes: %d\r\n",freelist[0].length);
+        freemem(b, 10000);
+        kprintf("Amount of avalible bytes: %d\r\n",freelist[0].length);
+
+
+
+
+	break;
 
     default:
         break;

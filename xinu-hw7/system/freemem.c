@@ -96,9 +96,9 @@ syscall freemem(void *memptr, ulong nbytes)
 
     else{
 
-    block->length = nbytes;
-    block->next = next;
-    prev->next = block;
+	block->length = nbytes;
+	block->next = next;
+	prev->next = block;
 
     }
 
