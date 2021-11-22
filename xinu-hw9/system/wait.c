@@ -48,7 +48,9 @@ syscall wait(semaphore sem)
      * Make this decrementation atomically-safe
      * so that multiple cores may safely wait for a semaphore.
      */
-	c = --semptr->count;
+	c = _atomic_decrement(&semptr->count); //atomic decrement
+
+	//c = --semptr->count;
 
     if (c < 0)
     {

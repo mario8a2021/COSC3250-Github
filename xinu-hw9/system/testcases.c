@@ -43,6 +43,13 @@ void testcases(void)
     switch (c)
     {
 
+	pid = create((void*) testsemwait, INITSTK, PRIORITY_HIGH, "SEM 1", testsm);
+	pid2 = //new test sem wait proc
+	//ready pid1
+	//print sme pid1
+	
+	ready(testsemwait(testsem), RESCHED_YES,1)
+
     default:
         break;
     }
