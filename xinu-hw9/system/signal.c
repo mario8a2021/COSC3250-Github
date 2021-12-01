@@ -1,3 +1,12 @@
+
+/**
+ * COSC 3250 - Project 9
+ * signal.c releases one thread that has been put into the wait state
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
 /**
  * @file signal.c
  *

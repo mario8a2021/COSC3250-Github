@@ -1,4 +1,13 @@
 /**
+ * COSC 3250 - Project 9
+ * signaln.c will signal a given semaphore
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
+
+/**
  * @file signaln.c
  *
  */

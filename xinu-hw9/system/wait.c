@@ -1,3 +1,12 @@
+
+/**
+ * COSC 3250 - Project 9
+ * wait.c will sleep a thread
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
 /**
  * @file wait.c
  *

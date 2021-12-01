@@ -50,8 +50,7 @@ void testcases(void)
     // TODO: Test your operating system!
 
     c = kgetc();
-    switch (c)
-    {
+
     case '0':
         // Run 3 processes with varying priorities
         ready(create

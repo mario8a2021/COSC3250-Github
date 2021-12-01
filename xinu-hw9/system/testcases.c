@@ -1,4 +1,15 @@
 /**
+ * COSC 3250 - Project 9
+ * This file contains testcases to test our semaphore files
+ * @authors Mario Ochoa, Jacqueline Gutierrez
+ * Instructor Sabirat Rubya
+ * TA-BOT:MAILTO mario.ochoa@marquette.edu, jacqueline.gutierrez@marquette.edu
+ */
+
+
+
+
+/**
  * @file testcases.c
  * @provides testcases
  *
@@ -42,14 +53,50 @@ void testcases(void)
     c = getc();
     switch (c)
     {
+    case 'a':;
+	//printf("starting \r\n");
+	//pid = create((void*) testsemwait, INITSTK, PRIORITY_HIGH, "SEM 1", testsm);
+	uint pid = create((void*) testSemWait, INITSTK, PRIORITY_HIGH, "SEM 1", testsem);
+	//printf("pid created \r\n");
+	//uint pid2 = create((void*) testSemWait, INITSTK, PRIORITY_HIGH, "SEM 2", testsem);
+	
+	//print_sem(testsem);
 
-	pid = create((void*) testsemwait, INITSTK, PRIORITY_HIGH, "SEM 1", testsm);
-	pid2 = //new test sem wait proc
+	//wait(testsem);
+
+	//print_sem(testsem);
+
+	//signal(testsem);
+
+	//new test sem wait proc
 	//ready pid1
 	//print sme pid1
 	
-	ready(testsemwait(testsem), RESCHED_YES,1)
+	//ready(testsemwait(testsem), RESCHED_YES,1)
+	//ready(testSemWait(testsem), RESCHED_YES,1);
+	//printf("starting to ready pid \r\n");
+	ready(testSemWait(testsem), RESCHED_YES,1);
+	//printf("ready done \r\n");
+	print_sem(testsem);
 
+	wait(testsem);
+	print_sem(testsem);
+	signal(testsem);
+	print_sem(testsem);
+	printf("testing done \r\n");
+//	break;
+	
+    //case 'b':
+	//uint pid2 = create((void*) testSemWait, INITSTK, PRIORITY_HIGH, "SEM 1", testsem);
+	
+	//wait(testsem);
+	
+	//semfree(testsem);
+	
+	//ready(testSemWait(testsem), RESCHED_YES,1);
+
+	//print_sem(testsem);
+       
     default:
         break;
     }
